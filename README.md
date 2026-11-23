@@ -1,18 +1,31 @@
-# SIM South Florida content calendar: brand theme
+# SIM South Florida content calendar
 
-SIM-branded theme files for the `sim-cal` Vercel project (sim-cal.vercel.app).
+The complete deployable app for the `sim-cal` Vercel project (sim-cal.vercel.app). Vercel builds
+this repo directly: static files at the root, the API in `api/calendar.js`.
 
-The deployed app is a prebuilt Vite/React bundle. All of its colors and fonts live in the
-stylesheet (the JS bundle has no color literals), so the rebrand only touches these files:
+| Path | What it is |
+|------|------------|
+| `index.html`, `assets/index-sim-v2.js` | The prebuilt React app (from the original Vite build), patched below. |
+| `assets/index-sim-brand.css` | SIM brand theme: SIM Blue `#005085`, SIM Red `#C0312C` (accents only), Light Gray `#C1C6C8`, Dark Gray `#54585A`; Roboto Slab headlines, Open Sans body. |
+| `sim-south-florida-logo.png` | Official SIM South Florida chapter logo, shown in the header. |
+| `api/calendar.js` | Bundled server (posts, comments, reviews, uploads). Stores data in Vercel Blob. |
+| `biscayne.jpg`, `Inter.woff2`, `favicon.svg` | Static assets. |
 
-| File | Change |
-|------|--------|
-| `public/assets/index-sim-brand.css` | Replaces `index-Qt2I2cLX.css`. Teal/mint palette swapped for SIM Blue `#005085`, SIM Red `#C0312C` (accents only), Light Gray `#C1C6C8`, Dark Gray `#54585A`. Roboto Slab headlines, Open Sans body. Header shows the official chapter logo. |
-| `public/index.html` | Loads Roboto Slab + Open Sans from Google Fonts, points at the new stylesheet, adds `theme-color`. |
-| `public/favicon.svg` | Calendar icon recolored to SIM Blue with a red rule. |
-| `public/sim-south-florida-logo.png` | Official SIM South Florida chapter logo (blue), 160px wide. |
+## Changes from the original build
 
-Unchanged deployment files (`assets/index-DeIeQTIm.js`, `api/calendar.js`, `biscayne.jpg`,
-`Inter.woff2`, `package.json`, `vercel.json`) are reused from the existing deployment by SHA.
+- **Open editing while testing.** Everyone who opens the calendar can add posts, comment, approve
+  and reject. No sign-in. To require the editor access code again, set `SIM_REQUIRE_EDIT_CODE=1`
+  in the Vercel project's environment variables and redeploy.
+- **Add a post on empty days.** The Selected day panel shows an "Add a post for this day" button.
+- **Text-only posts show on the calendar.** Previously only posts with attached media appeared.
+- **Reject.** "Request changes" is labeled "Reject"; a reason is required and is saved as a comment.
+  A rejected post shows "Changes requested" and can be edited and resubmitted.
 
-Status colors: draft = gray, in review = amber, changes requested = SIM Red, approved = SIM Blue.
+Review flow: Draft → Submit for review → Approve, or Reject → edit → resubmit.
+
+## Environment variables (set in Vercel, not in this repo)
+
+- Blob storage token (from the connected Vercel Blob store)
+- `SIM_VIEW_KEY`, `SIM_EDIT_KEY`: access codes
+- `SIM_VIEW_WITHOUT_CODE=1`: anyone with the link can view
+- `SIM_REQUIRE_EDIT_CODE=1`: optional, turns the editor code back on

@@ -1,0 +1,23 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/calendar/:route(.+)",
+      "destination": "/api/calendar?route=:route"
+    },
+    {
+      "source": "/roadmap",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
+  ]
+}
